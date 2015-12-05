@@ -1,4 +1,4 @@
-package com.example.jan.flipflop;
+﻿package com.example.jan.flipflop;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -169,22 +169,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 btSortear = (Button) findViewById(R.id.button);
                 btSortear.setEnabled(true);
             }
-            //atualizaBanco();
         } else {
             // Envia uma mensagem de erro caso o AutoText esteja vazio
             Toast.makeText(this, "Campo vazio. Digite novamente!", Toast.LENGTH_LONG).show();
         }
 
     }
-
-    /*public void atualizaBanco() {
-
-        nomes = mNomeRepositorio.listaNomes();
-        for (String n : nomes) {
-            Log.i("JRX", n);
-        }
-    }*/
-
     public void sortearNome(View v) {
         //Austa o volume do TTS para o máximo
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
