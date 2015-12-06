@@ -100,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         if (savedInstanceState != null) {
             nomesDigitados = savedInstanceState.getStringArrayList("nomes");
+            Boolean statusOfButton = savedInstanceState.getBoolean("statusOfButton");
+            btSortear.setEnabled(statusOfButton);
+
         } else {
             nomesDigitados = new ArrayList<String>();
         }
@@ -114,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onSaveInstanceState(outState);
 
         outState.putStringArrayList("nomes", nomesDigitados);
+        if(btSortear.isEnabled()) {
+            outState.putBoolean("statusOfButton", true);
+        }
     }
 
     @Override
@@ -150,8 +156,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             sobreDialogFragment.show(getSupportFragmentManager(), SobreDialogFragment.DIALOG_TAG);
 
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
