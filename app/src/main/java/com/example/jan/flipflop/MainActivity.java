@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onSaveInstanceState(outState);
 
         outState.putStringArrayList("nomes", nomesDigitados);
-        if(btSortear.isEnabled()) {
+        if (btSortear.isEnabled()) {
             outState.putBoolean("statusOfButton", true);
         }
     }
@@ -180,11 +180,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
 
     }
+
     public void sortearNome(View v) {
         //Austa o volume do TTS para o máximo
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        int amStreamMaxVol = am.getStreamMaxVolume(am.STREAM_MUSIC);
-        am.setStreamVolume(am.STREAM_MUSIC, amStreamMaxVol, 0);
+        int amStreamMaxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, amStreamMaxVol, 0);
 
 
         // Sorteia o nome
