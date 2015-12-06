@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         nomes = mNomeRepositorio.listaNomes();
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nomes);
 
-        // Flag utilizada para saber se já houve um sorteio
+        // Flag utilizada para saber se jah houve um sorteio
         flagSortear = false;
 
         autoTextNome = (AutoCompleteTextView) findViewById(R.id.acText);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     isUpdating = false;
                     return;
                 }
-                if (flagSortear) { // Se já houve um sorteio, prepara os componentes para um novo sorteio
+                if (flagSortear) { // Se jah houve um sorteio, prepara os componentes para um novo sorteio
                     txtResultado.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
                     adapterList.clear();
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             nomesDigitados.add(texto);
             adapterList.notifyDataSetChanged();
-            // Se existir mais de um nome confirmado, habilita o botão de Sortear
+            // Se existir mais de um nome confirmado, habilita o botao de Sortear
             if (nomesDigitados.size() > 1) {
                 btSortear = (Button) findViewById(R.id.button);
                 btSortear.setEnabled(true);
