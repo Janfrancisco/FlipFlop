@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0288D1">
+    android:background="#0288d1">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@null"
+        android:text="\@null"
         android:id="@+id/txtResultado"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"

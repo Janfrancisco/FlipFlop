@@ -1,13 +1,13 @@
-﻿package com.example.jan.flipflop;
+package com.example.jan.flipflop;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,16 +32,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     List<String> nomes;
     ArrayList<String> nomesDigitados;
     ArrayAdapter<String> adapterList;
-    AutoCompleteTextView autoTextNome;
+    AutoCompleteTextView autoCompleteTextViewNome;
     NomesRepositorio mNomeRepositorio;
     ArrayAdapter<String> mAdapter;
     TextView txtResultado;
     ListView listView;
-    Button btSortear;
-    boolean flagSortear;
     String textChoice;
     ProgressDialog mProgress;
+    Button btSortear;
+
+    public static final String EXTRA_NOME =   "com.example.jan.flipflop.NOME";
+    public static final String EXTRA_STATUS = "com.example.jan.flipflop.STATUS";
+    public static final String EXTRA_VOLUME = "com.example.jan.flipflop.VOLUME";
+
     boolean flagVolume;
+    boolean flagSortear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        btSortear = (Button) findViewById(R.id.button);
+
         tts = new TextToSpeech(this, this);
+
 
         mNomeRepositorio = new NomesRepositorio(this);
 
@@ -61,16 +69,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         nomes = mNomeRepositorio.listaNomes();
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nomes);
 
-        // Flag utilizada para saber se jah houve um sorteio
         flagSortear = false;
 
-        autoTextNome = (AutoCompleteTextView) findViewById(R.id.acText);
-        //Esconde o teclado virtual ao iniciar o aplicativo
+        autoCompleteTextViewNome = (AutoCompleteTextView) findViewById(R.id.acText);
+        //Esconde o teclado virtual
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(autoTextNome.getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(autoCompleteTextViewNome.getWindowToken(), 0);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        autoTextNome.setAdapter(mAdapter);
-        autoTextNome.addTextChangedListener(new TextWatcher() {
+        autoCompleteTextViewNome.setAdapter(mAdapter);
+        autoCompleteTextViewNome.addTextChangedListener(new TextWatcher() {
             boolean isUpdating;
 
             @Override
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     isUpdating = false;
                     return;
                 }
-                if (flagSortear) { // Se jah houve um sorteio, prepara os componentes para um novo sorteio
+                if (flagSortear) {
                     txtResultado.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
                     adapterList.clear();
@@ -91,17 +98,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     flagSortear = false;
                 }
+
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
 
         if (savedInstanceState != null) {
-            nomesDigitados = savedInstanceState.getStringArrayList("nomes");
-            Boolean statusOfButton = savedInstanceState.getBoolean("statusOfButton");
-            btSortear.setEnabled(statusOfButton);
+            nomesDigitados = savedInstanceState.getStringArrayList(EXTRA_NOME);
+            boolean statusButton = savedInstanceState.getBoolean(EXTRA_STATUS);
 
+            btSortear.setEnabled(statusButton);
         } else {
             nomesDigitados = new ArrayList<String>();
         }
@@ -115,30 +124,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putStringArrayList("nomes", nomesDigitados);
-        if (btSortear.isEnabled()) {
-            outState.putBoolean("statusOfButton", true);
-        }
+        outState.putStringArrayList(EXTRA_NOME, nomesDigitados);
+        outState.putBoolean(EXTRA_STATUS, btSortear.isEnabled());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        // Flag que indica se o mute estah ativado ou não
         flagVolume = false;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_mute) {
             if (flagVolume) {
                 item.setIcon(R.mipmap.ic_action_volume_on);
@@ -155,22 +155,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             sobreDialogFragment.show(getSupportFragmentManager(), SobreDialogFragment.DIALOG_TAG);
 
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 
     public void cadastraNoBanco(View v) {
-        String texto = autoTextNome.getText().toString();
+        String texto = autoCompleteTextViewNome.getText().toString();
         if (!texto.equals("")) {
             Nome n = new Nome(texto);
-            autoTextNome.setText("");
+            autoCompleteTextViewNome.setText("");
 
             mNomeRepositorio.inserirNome(n);
 
             nomesDigitados.add(texto);
             adapterList.notifyDataSetChanged();
-            // Se existir mais de um nome confirmado, habilita o botao de Sortear
+
             if (nomesDigitados.size() > 1) {
-                btSortear = (Button) findViewById(R.id.button);
+
                 btSortear.setEnabled(true);
             }
         } else {
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         //Esconde o teclado virtual
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(autoTextNome.getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(autoCompleteTextViewNome.getWindowToken(), 0);
 
 
         //Exibe uma caixa de progresso durante o sorteio
@@ -205,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mProgress.setCancelable(false);
         mProgress.show();
 
-        // Implementa um atraso de 3 segundos
+        // Implementa um atraso
         new Handler().postDelayed(this, 3000);
 
         btSortear.setEnabled(false);

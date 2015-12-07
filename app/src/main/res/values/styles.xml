@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
 
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#01579B</item>
+        <item name="colorPrimary">#303F9F</item>
         <item name="colorAccent">#FFFFFF</item>
         <!--<item name="colorAccent">@android:color/white</item>-->
         <!--<item name="colorControlNormal">@android:color/white</item>-->
