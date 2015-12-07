@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     flagSortear = false;
                 }
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
             }
