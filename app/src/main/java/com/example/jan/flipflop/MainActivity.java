@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        // Flag que indica se o mute está ativado ou não
+        // Flag que indica se o mute estah ativado ou não
         flagVolume = false;
         return true;
     }
