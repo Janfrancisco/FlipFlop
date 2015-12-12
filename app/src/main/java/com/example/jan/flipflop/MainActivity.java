@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(autoCompleteTextViewNome.getWindowToken(), 0);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        
         autoCompleteTextViewNome.setAdapter(mAdapter);
         autoCompleteTextViewNome.addTextChangedListener(new TextWatcher() {
             boolean isUpdating;
